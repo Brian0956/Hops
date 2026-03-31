@@ -1,340 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Happy Monthsary ❤️</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My little poem</title>
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #ff9a9e, #fecfef);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      overflow-y: auto;
-      padding: 40px 20px;
-    }
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* ── Tap-to-start overlay ── */
-    #musicPrompt {
-      position: fixed;
-      inset: 0;
-      background: rgba(255, 77, 109, 0.92);
-      backdrop-filter: blur(8px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      cursor: pointer;
-      animation: fadeIn 0.6s ease;
-    }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #fdf6f0, #f7e7e1);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4b2e2e;
+  padding: 40px 20px;
+}
 
-    #musicPrompt h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      margin-bottom: 12px;
-      color: #fff;
-      text-align: center;
-      padding: 0 24px;
-    }
+/* Tap overlay */
+#musicPrompt {
+  position: fixed;
+  inset: 0;
+  background: rgba(120, 80, 80, 0.9);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  cursor: pointer;
+}
 
-    #musicPrompt p {
-      font-size: 1rem;
-      opacity: 0.9;
-      color: #fff;
-    }
+#tapHeart {
+  font-size: 4rem;
+  animation: pulse 1.2s infinite;
+  margin-bottom: 15px;
+}
 
-    #tapHeart {
-      font-size: 5rem;
-      animation: pulse 1.2s infinite;
-      margin-bottom: 20px;
-    }
+#musicPrompt h2 {
+  font-family: 'Playfair Display', serif;
+  color: #fff;
+}
 
-    /* ── Music status bar ── */
-    #musicBar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-size: 0.85rem;
-      opacity: 0.85;
-      margin-bottom: 18px;
-    }
+/* Card */
+.card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  border-radius: 25px;
+  padding: 40px;
+  max-width: 550px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
 
-    .music-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #fff;
-      animation: blink 1.2s infinite;
-    }
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
-    }
+h2 {
+  font-weight: 300;
+  margin-bottom: 20px;
+}
 
-    .card {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(14px);
-      border-radius: 30px;
-      padding: 45px 40px;
-      max-width: 560px;
-      text-align: center;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-      animation: fadeIn 1.5s ease;
-      position: relative;
-      z-index: 2;
-    }
+.heart {
+  font-size: 3rem;
+  margin: 15px 0;
+  animation: pulse 1.2s infinite;
+}
 
-    h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin-bottom: 8px; }
-    h2 { font-weight: 300; font-size: 1.1rem; margin-bottom: 22px; }
+p {
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
 
-    .heart {
-      font-size: 4rem;
-      animation: pulse 1.2s infinite;
-      margin: 15px 0 25px;
-    }
+.counter {
+  font-weight: 500;
+  margin-bottom: 25px;
+}
 
-    p { font-size: 1.05rem; line-height: 1.8; margin-bottom: 25px; }
+/* Floating hearts (subtle now) */
+.floating-hearts span {
+  position: absolute;
+  bottom: -40px;
+  font-size: 18px;
+  animation: floatUp 10s linear infinite;
+  opacity: 0.3;
+}
 
-    .counter { font-size: 1.15rem; margin-bottom: 30px; font-weight: 500; }
+/* Animations */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
 
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-    }
-
-    button {
-      background: #ff4d6d;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 40px;
-      font-size: 0.95rem;
-      color: #fff;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
-    }
-
-    button:hover { transform: translateY(-3px) scale(1.05); background: #ff3355; }
-
-    #musicBtn { background: #d63f5e; }
-
-    .hidden-message {
-      display: none;
-      margin-top: 25px;
-      font-style: italic;
-      animation: fadeIn 1s ease;
-      white-space: pre-line;
-    }
-
-    .floating-hearts span {
-      position: absolute;
-      bottom: -40px;
-      font-size: 22px;
-      animation: floatUp 8s linear infinite;
-      opacity: 0.7;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.3); }
-      100% { transform: scale(1); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(25px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes floatUp {
-      from { transform: translateY(0); opacity: 0.7; }
-      to { transform: translateY(-120vh); opacity: 0; }
-    }
-  </style>
+@keyframes floatUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-120vh); opacity: 0; }
+}
+</style>
 </head>
+
 <body>
 
-  <!--
-    ════════════════════════════════════════════════════════
-    MUSIC FILE — GitHub Raw URL
-    ════════════════════════════════════════════════════════
-    The audio loads directly from your GitHub repo using
-    raw.githubusercontent.com. Two things make this work:
+<audio id="bgMusic" loop crossorigin="anonymous">
+  <source src="https://raw.githubusercontent.com/Brian0956/monthsary/b4433e975a7736164a86599a8ce1c0baae8f7a82/I%20Like%20You%20So%20Much%2C%20Youll%20Know%20It.mp3" type="audio/mpeg">
+</audio>
 
-      1. crossorigin="anonymous" — tells the browser it's
-         allowed to load audio from a different domain (GitHub).
-         Without this, many browsers silently block the audio.
+<div id="musicPrompt" onclick="startExperience()">
+  <div id="tapHeart">🤍</div>
+  <h2>Tap to open 💫</h2>
+</div>
 
-      2. The URL uses the COMMIT HASH instead of a branch name
-         so the file is always found even if the branch changes.
+<div class="floating-hearts">
+  <span style="left: 10%;">♡</span>
+  <span style="left: 40%; animation-delay: 2s;">♡</span>
+  <span style="left: 70%; animation-delay: 4s;">♡</span>
+</div>
 
-    If you ever rename or re-upload the audio file, update the
-    src URL below to match the new commit hash or use "main":
-      https://raw.githubusercontent.com/Brian0956/monthsary/main/I%20Like%20You%20So%20Much%2C%20Youll%20Know%20It.mp3
-    ════════════════════════════════════════════════════════
-  -->
-  <audio id="bgMusic" loop crossorigin="anonymous" preload="auto">
-    <source
-      src="https://raw.githubusercontent.com/Brian0956/monthsary/b4433e975a7736164a86599a8ce1c0baae8f7a82/I%20Like%20You%20So%20Much%2C%20Youll%20Know%20It.mp3"
-      type="audio/mpeg"
-    />
-  </audio>
+<div class="card">
 
-  <!-- Tap-to-start overlay — required to bypass browser autoplay policy -->
-  <div id="musicPrompt" onclick="startExperience()">
-    <div id="tapHeart">❤️</div>
-    <h2>Tap to open your surprise 💕</h2>
-    <p>🎵 Sound on for the full experience</p>
-  </div>
+  <div class="heart">🤍</div>
 
-  <div class="floating-hearts">
-    <span style="left: 10%; animation-delay: 0s;">❤️</span>
-    <span style="left: 25%; animation-delay: 2s;">💕</span>
-    <span style="left: 45%; animation-delay: 4s;">💖</span>
-    <span style="left: 65%; animation-delay: 1s;">❤️</span>
-    <span style="left: 85%; animation-delay: 3s;">💕</span>
-  </div>
+  <div class="counter" id="counter"></div>
 
-  <div class="card">
-    <h1>Happy Monthsary</h1>
-    <h2>Another month loving you 💕</h2>
+  <p>
+    Hi Audiee! I'll keep this simple… or at least I'll try.
+    <br><br>
+    I didn't expect to look at you romantically at first, but here we are. And honestly? I wouldn't change it for anything.
+    <br><br>
+    I just want you to know I'm genuinely happy to have you in my life — the kind of happy that makes everything feel lighter.
+    <br><br>
+    The way we clicked so naturally, like we've known each other forever, still surprises me. And how much we have in common? That just makes everything better.
+    <br><br>
+    I hope we keep this going — more late talks, more laughs, more moments that become memories. Because with you, it's always worth it.
+    <br><br>
+    I really like you. More than I expected to.
+    <br><br>
+    I like the way you make me smile for no reason, the way you stay in my thoughts, and how you became my favorite person to talk to.
+    <br><br>
+    You're slowly becoming my favorite habit… and I don't want to break it anytime soon.
+    <br><br>
+    So yeah… I really like you. And I'm hoping you like me just as much too 💕
+  </p>
 
-    <div class="heart">❤️</div>
+</div>
+<script>
+const startDate = new Date(2026, 0, 1);
+const music = document.getElementById("bgMusic");
 
-    <!-- Live music indicator -->
-    <div id="musicBar">
-      <div class="music-dot"></div>
-      <span id="musicLabel">🎵 Now playing…</span>
-    </div>
+function startExperience() {
+  const overlay = document.getElementById("musicPrompt");
+  overlay.style.opacity = "0";
+  setTimeout(() => overlay.style.display = "none", 500);
 
-    <p>
-      Every month with you feels like a small celebration of love.
-      Thank you for choosing me, for loving me, and for making ordinary days feel special.
-    </p>
+  music.play().catch(() => {});
+}
 
-    <div class="counter" id="counter"></div>
+function updateCounter() {
+  const now = new Date();
+  let months = (now.getFullYear() - startDate.getFullYear()) * 12;
+  months += now.getMonth() - startDate.getMonth();
+  if (now.getDate() < startDate.getDate()) months--;
 
-    <div class="buttons">
-      <button onclick="showLove()">Read My Message</button>
-      <button id="musicBtn" onclick="toggleMusic()">⏸ Pause Music</button>
-      <button onclick="showPromise()">Our Promise</button>
-      <button onclick="surprise()">Surprise 💕</button>
-    </div>
 
-    <p class="hidden-message" id="loveMessage">
-Another month has passed with you,
-And still my heart feels brand new.
-In quiet smiles and late-night talks.
+}
 
-Sorry if medyo busy si me kai you know how hard
-life is for students, I really appreciate you so much for understanding and being patient with me. 
-I know I can be a bit of a handful sometimes, but you always manage to make me feel loved and supported.
-Thank you for being my rock, my confidant, and my best friend. 
-I am so grateful to have you in my life, and I cherish every moment we spend together.
-I hope this relationship continues to grow stronger.
-
-Happy monthsary, my love so true,
-Every tomorrow starts with you. 💖
-    </p>
-
-    <p class="hidden-message" id="promiseMessage">
-I promise to keep choosing you.
-On easy days and hard ones too.
-To grow with you, laugh with you,
-And build a future side by side. ❤️
-    </p>
-
-  </div>
-
-  <script>
-    const startDate = new Date(2026, 0, 1);
-    const music = document.getElementById("bgMusic");
-    const musicBtn = document.getElementById("musicBtn");
-    const musicLabel = document.getElementById("musicLabel");
-    const musicDot = document.querySelector(".music-dot");
-
-    /* ── Dismiss overlay and start music on first tap ── */
-    function startExperience() {
-      const overlay = document.getElementById("musicPrompt");
-      overlay.style.transition = "opacity 0.5s ease";
-      overlay.style.opacity = "0";
-      setTimeout(() => overlay.style.display = "none", 500);
-
-      music.play()
-        .then(() => {
-          setPlaying(true);
-        })
-        .catch((err) => {
-          console.warn("Audio play failed:", err);
-          setPlaying(false);
-          musicLabel.textContent = "⚠️ Tap ▶ Play Music to start";
-        });
-    }
-
-    /* ── Play / Pause toggle button ── */
-    function toggleMusic() {
-      if (music.paused) {
-        music.play().then(() => setPlaying(true));
-      } else {
-        music.pause();
-        setPlaying(false);
-      }
-    }
-
-    function setPlaying(isPlaying) {
-      if (isPlaying) {
-        musicBtn.textContent = "⏸ Pause Music";
-        musicLabel.textContent = "🎵 Now playing…";
-        musicDot.style.animationPlayState = "running";
-      } else {
-        musicBtn.textContent = "▶ Play Music";
-        musicLabel.textContent = "⏸ Music paused";
-        musicDot.style.animationPlayState = "paused";
-        musicDot.style.opacity = "0.3";
-      }
-    }
-
-    /* ── Sync button state with audio events ── */
-    music.addEventListener("play",  () => setPlaying(true));
-    music.addEventListener("pause", () => setPlaying(false));
-    music.addEventListener("error", () => {
-      musicLabel.textContent = "⚠️ Could not load music — check the file in GitHub";
-      musicDot.style.animationPlayState = "paused";
-    });
-
-    function showLove() {
-      document.getElementById('loveMessage').style.display = 'block';
-    }
-
-    function showPromise() {
-      document.getElementById('promiseMessage').style.display = 'block';
-    }
-
-    function surprise() {
-      alert("You are my favorite notification, my safest place, and my best decision. 💕");
-    }
-
-    function updateCounter() {
-      const now = new Date();
-      let months = (now.getFullYear() - startDate.getFullYear()) * 12;
-      months += now.getMonth() - startDate.getMonth();
-      if (now.getDate() < startDate.getDate()) months--;
-      document.getElementById('counter').innerHTML =
-        `We've been together for <strong>${months}</strong> month(s). ❤️`;
-    }
-
-    updateCounter();
-  </script>
+updateCounter();
+</script>
 
 </body>
 </html>
