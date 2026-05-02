@@ -3,125 +3,446 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Happy Birthday ❤️</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
-
+<title>Happy Birthday Audie ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
 <style>
+:root {
+  --rose: #c9726b;
+  --blush: #f2c4bc;
+  --cream: #fdf5f0;
+  --gold: #d4a96a;
+  --deep: #3a1a1a;
+  --petal: #f7ddd8;
+}
+ 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
+ 
 body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #fdf6f0, #f7e7e1);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  background: var(--cream);
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--deep);
+  cursor: none;
+}
+ 
+/* Custom cursor */
+.cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--rose);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease;
+  mix-blend-mode: multiply;
+}
+.cursor-trail {
+  position: fixed;
+  width: 30px; height: 30px;
+  border: 1px solid var(--rose);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.15s ease;
+  opacity: 0.5;
+}
+ 
+/* Canvas for petals */
+canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+ 
+/* Page layout */
+.page {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #4b2e2e;
-  padding: 40px 20px;
+  padding: 60px 20px;
 }
-
+ 
+/* Decorative lines */
+.deco-lines {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.deco-line {
+  position: absolute;
+  background: linear-gradient(to bottom, transparent, var(--blush), transparent);
+  width: 1px;
+  height: 100%;
+  opacity: 0.4;
+}
+.deco-line:nth-child(1) { left: 12%; }
+.deco-line:nth-child(2) { left: 50%; }
+.deco-line:nth-child(3) { left: 88%; }
+ 
 /* Card */
 .card {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(12px);
-  border-radius: 25px;
-  padding: 40px;
-  max-width: 550px;
+  max-width: 620px;
+  width: 100%;
   text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  position: relative;
 }
-
+ 
+/* Top ornament */
+.ornament {
+  font-size: 1rem;
+  letter-spacing: 0.5em;
+  color: var(--gold);
+  margin-bottom: 30px;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.3s forwards;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+}
+ 
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  justify-content: center;
+  margin: 20px 0;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.5s forwards;
+}
+.divider-line {
+  height: 1px;
+  width: 80px;
+  background: linear-gradient(to right, transparent, var(--gold));
+}
+.divider-line.rev {
+  background: linear-gradient(to left, transparent, var(--gold));
+}
+.divider-diamond {
+  color: var(--gold);
+  font-size: 0.6rem;
+}
+ 
+/* Heading */
 h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.5rem;
-  margin-bottom: 10px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.8rem, 8vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--deep);
+  opacity: 0;
+  animation: fadeUp 1s ease 0.6s forwards;
 }
-
-.heart {
-  font-size: 3rem;
-  margin: 15px 0;
-  animation: pulse 1.2s infinite;
+h1 em {
+  font-style: italic;
+  color: var(--rose);
 }
-
-p {
-  line-height: 1.7;
+ 
+/* Date badge */
+.date-badge {
+  display: inline-block;
+  background: var(--rose);
+  color: white;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding: 6px 20px;
+  border-radius: 30px;
+  margin: 25px 0;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.8s forwards;
+}
+ 
+/* Letter body */
+.letter {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 169, 106, 0.2);
+  border-radius: 3px;
+  padding: 45px 45px;
+  text-align: left;
+  position: relative;
+  margin: 30px 0;
+  opacity: 0;
+  animation: fadeUp 1.2s ease 1s forwards;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.9) inset,
+    0 30px 60px rgba(180, 100, 90, 0.08);
+}
+ 
+/* Corner decorations */
+.corner {
+  position: absolute;
+  width: 20px; height: 20px;
+  border-color: var(--gold);
+  border-style: solid;
+  opacity: 0.5;
+}
+.corner.tl { top: 12px; left: 12px; border-width: 1px 0 0 1px; }
+.corner.tr { top: 12px; right: 12px; border-width: 1px 1px 0 0; }
+.corner.bl { bottom: 12px; left: 12px; border-width: 0 0 1px 1px; }
+.corner.br { bottom: 12px; right: 12px; border-width: 0 1px 1px 0; }
+ 
+.letter p {
+  font-size: 1rem;
+  line-height: 1.95;
+  color: #5a3535;
+  margin-bottom: 20px;
+}
+.letter p:last-child { margin-bottom: 0; }
+ 
+.letter .salutation {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--rose);
   margin-bottom: 25px;
 }
-
+ 
+.letter .closing {
+  margin-top: 30px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--rose);
+}
+ 
+/* Signature */
+.signature {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-style: italic;
+  color: var(--deep);
+  opacity: 0;
+  animation: fadeUp 1s ease 1.4s forwards;
+  margin: 10px 0 30px;
+}
+ 
+/* Emoji row */
+.emoji-row {
+  font-size: 1.5rem;
+  letter-spacing: 0.3em;
+  opacity: 0;
+  animation: fadeUp 1s ease 1.5s forwards;
+  margin: 10px 0 35px;
+}
+ 
 /* Button */
+.btn-wrap {
+  opacity: 0;
+  animation: fadeUp 1s ease 1.7s forwards;
+}
 .btn {
   display: inline-block;
-  padding: 12px 25px;
-  border-radius: 20px;
-  background: #e6b8af;
-  color: #fff;
+  padding: 16px 40px;
+  background: transparent;
+  color: var(--rose);
   text-decoration: none;
-  font-weight: 500;
-  transition: 0.3s;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  border: 1px solid var(--rose);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.4s ease;
 }
-
-.btn:hover {
-  background: #d49a91;
-}
-
-/* Floating hearts */
-.floating-hearts span {
+.btn::before {
+  content: '';
   position: absolute;
-  bottom: -40px;
-  font-size: 18px;
-  animation: floatUp 10s linear infinite;
-  opacity: 0.3;
+  inset: 0;
+  background: var(--rose);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+  z-index: -1;
 }
-
-/* Animations */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+.btn:hover::before { transform: scaleX(1); }
+.btn:hover { color: white; }
+ 
+/* Keyframes */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
-@keyframes floatUp {
-  from { transform: translateY(0); }
-  to { transform: translateY(-120vh); opacity: 0; }
+ 
+/* Floating petals (canvas fallback labels) */
+.petal-emoji {
+  position: fixed;
+  font-size: 16px;
+  pointer-events: none;
+  animation: floatPetal linear infinite;
+  opacity: 0;
+  z-index: 0;
+}
+@keyframes floatPetal {
+  0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.4; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+ 
+/* Responsive */
+@media (max-width: 500px) {
+  .letter { padding: 30px 25px; }
+  h1 { font-size: 2.6rem; }
 }
 </style>
 </head>
-
 <body>
-
-<div class="floating-hearts">
-  <span style="left: 10%;">♡</span>
-  <span style="left: 40%; animation-delay: 2s;">♡</span>
-  <span style="left: 70%; animation-delay: 4s;">♡</span>
+ 
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+ 
+<canvas id="petalCanvas"></canvas>
+ 
+<div class="deco-lines">
+  <div class="deco-line"></div>
+  <div class="deco-line"></div>
+  <div class="deco-line"></div>
 </div>
-
-<div class="card">
-
-  <h1>Happy Birthday Audie ❤️</h1>
-
-  <div class="heart">🎂</div>
-
-  <p>
-    Hi Kali, happy birthday to you 🤍  
-    <br><br>
-    Today is all about celebrating you — the person who makes my days brighter, my heart lighter, and my life so much happier.
-    <br><br>
-    I didn’t expect someone like you to come into my life and mean this much to me, but here you are… and I’m so grateful for you every single day.
-    <br><br>
-    You deserve all the love, all the happiness, and all the beautiful things this world can offer — not just today, but always.
-    <br><br>
-    Thank you for your smile, your care, your laughter, and for being my favorite person.
-    <br><br>
-    I hope this year brings you closer to your dreams, and I hope I get to stay right by your side through it all.
-    <br><br>
-    I love you more than words can explain… and I’m really lucky to have you 💕
-  </p>
-
-  <!-- Button -->
-  <a href="nextPage.html" class="btn">Click This for a supprise 💫</a>
-
+ 
+<div class="page">
+  <div class="card">
+ 
+    <div class="ornament">✦ &nbsp; a birthday letter &nbsp; ✦</div>
+ 
+    <h1>Happy Birthday,<br><em>Audie</em> ❤️</h1>
+ 
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-diamond">◆</span>
+      <div class="divider-line rev"></div>
+    </div>
+ 
+    <div class="date-badge">🎂 &nbsp; Your Special Day &nbsp; 🎂</div>
+ 
+    <div class="letter">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+ 
+      <div class="salutation">Hi Kali, 🤍</div>
+ 
+      <p>Happy birthday to you — someone who deserves every beautiful thing this world has to offer, not just today, but every single day.</p>
+ 
+      <p>Today is all about celebrating <em>you</em> — the person who makes my days brighter, my heart lighter, and my life so much happier just by being in it.</p>
+ 
+      <p>I didn't expect someone like you to come into my life and mean this much to me, but here you are… and I'm so grateful for you every single day.</p>
+ 
+      <p>You deserve all the love, all the happiness, and all the beautiful things this world can offer. Not just today — but always, in every season of your life.</p>
+ 
+      <p>Thank you for your smile, your care, your laughter, and for being my favorite person. Thank you for letting me be part of your story.</p>
+ 
+      <p>I hope this year brings you closer to your dreams — and I hope I get to stay right by your side through all of it.</p>
+ 
+      <div class="closing">
+        I love you more than words can explain…<br>
+        and I'm really lucky to have you. 💕
+      </div>
+    </div>
+ 
+    <div class="divider" style="opacity:1; animation: none;">
+      <div class="divider-line"></div>
+      <span class="divider-diamond">◆</span>
+      <div class="divider-line rev"></div>
+    </div>
+ 
+    <div class="emoji-row">🌸 &nbsp; 💕 &nbsp; 🕯️ &nbsp; 💕 &nbsp; 🌸</div>
+ 
+    <div class="btn-wrap">
+      <a href="nextPage.html" class="btn">Open Your Surprise &nbsp; ✦</a>
+    </div>
+ 
+  </div>
 </div>
-
+ 
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const trail = document.getElementById('cursorTrail');
+let mx = 0, my = 0, tx = 0, ty = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+setInterval(() => {
+  tx += (mx - tx) * 0.18;
+  ty += (my - ty) * 0.18;
+  trail.style.left = tx + 'px';
+  trail.style.top = ty + 'px';
+}, 16);
+ 
+// Falling petals on canvas
+const canvas = document.getElementById('petalCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+ 
+const petals = [];
+const petalSymbols = ['❤', '♡', '🌸', '✿', '❀'];
+const colors = ['#c9726b', '#e8a0a0', '#d4a96a', '#f2c4bc', '#b06060'];
+ 
+for (let i = 0; i < 28; i++) {
+  petals.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    size: 10 + Math.random() * 14,
+    speed: 0.5 + Math.random() * 1.2,
+    drift: (Math.random() - 0.5) * 0.8,
+    rot: Math.random() * 360,
+    rotSpeed: (Math.random() - 0.5) * 1.5,
+    symbol: petalSymbols[Math.floor(Math.random() * petalSymbols.length)],
+    color: colors[Math.floor(Math.random() * colors.length)],
+    opacity: 0.15 + Math.random() * 0.35,
+    delay: Math.random() * 300,
+  });
+}
+ 
+let frame = 0;
+function drawPetals() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  frame++;
+  petals.forEach(p => {
+    if (frame < p.delay) return;
+    p.y -= p.speed;
+    p.x += p.drift;
+    p.rot += p.rotSpeed;
+    if (p.y < -30) {
+      p.y = canvas.height + 30;
+      p.x = Math.random() * canvas.width;
+    }
+    ctx.save();
+    ctx.globalAlpha = p.opacity;
+    ctx.font = `${p.size}px serif`;
+    ctx.fillStyle = p.color;
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot * Math.PI / 180);
+    ctx.fillText(p.symbol, 0, 0);
+    ctx.restore();
+  });
+  requestAnimationFrame(drawPetals);
+}
+drawPetals();
+</script>
 </body>
 </html>
