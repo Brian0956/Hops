@@ -167,19 +167,46 @@ h1 em {
  
 /* Letter body */
 .letter {
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(212, 169, 106, 0.2);
-  border-radius: 3px;
-  padding: 45px 45px;
-  text-align: left;
-  position: relative;
-  margin: 30px 0;
-  opacity: 0;
-  animation: fadeUp 1.2s ease 1s forwards;
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.9) inset,
-    0 30px 60px rgba(180, 100, 90, 0.08);
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(212, 169, 106, 0.2);
+    border-radius: 3px;
+    padding: 45px;
+    text-align: justify;
+    text-justify: inter-word;
+    position: relative;
+    margin: 30px 0;
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.9) inset,
+        0 30px 60px rgba(180, 100, 90, 0.08);
+}
+
+.letter p {
+    font-size: 1rem;
+    line-height: 1.95;
+    color: #5a3535;
+    margin-bottom: 20px;
+    text-align: justify;
+    text-justify: inter-word;
+    text-indent: 2em;
+}
+
+.letter .salutation {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--rose);
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.letter .closing {
+    margin-top: 30px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--rose);
+    text-align: right;
 }
  
 /* Corner decorations */
